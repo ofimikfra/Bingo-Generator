@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#bingo {
+    background-color: aquamarine;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    border: 2px solid black;
+    width: fit-content;
+    border-radius: 5px;
+}
+
+.card {
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    transition: background-color 0.3s ease;
+}
+
+.card:hover {
+    background-color: lightgray;
+    transition: background-color 0.3s ease;
+}
+
+.card.toggled {
+    background-color: yellow;
+}
+
+
+
