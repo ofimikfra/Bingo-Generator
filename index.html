@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<title>Bingo Generator</title>
+        <link rel="icon" type="image/x-icon" href="https://nyctrivialeague.com/wp-content/uploads/2017/11/Bingo-Icon.png">
+	</head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Bingo Generator</title>
-</head>
+	<body>
+		<script src="bingo.js"></script>
+		<div id="panel">
+			<i id="arrow" class="bi bi-caret-left-fill"></i>
+            <h2>MENU</h2>
+            <form>
+                <!--customization settings-->
+            </form>
+		</div>
 
-<body>
-    <script src="bingo.js"></script>
-    <div class="container">
-        <div id="bingo"></div>
-    </div>
-</body>
+		<i id="menu" class="bi bi-list"></i>
 
+		<div class="page">
+			<div id="container">
+				<div class="head">
+					<div class="header">B</div>
+					<div class="header">I</div>
+					<div class="header">N</div>
+					<div class="header">G</div>
+					<div class="header">O</div>
+				</div>
+				<div id="bingo"></div>
+			</div>
+		</div>
+	</body>
 </html>
