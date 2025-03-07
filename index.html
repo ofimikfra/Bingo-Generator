@@ -5,24 +5,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<title>Bingo Generator</title>
-        <link rel="icon" type="image/x-icon" href="https://nyctrivialeague.com/wp-content/uploads/2017/11/Bingo-Icon.png">
+		<link
+			rel="icon"
+			type="image/x-icon"
+			href="https://nyctrivialeague.com/wp-content/uploads/2017/11/Bingo-Icon.png"
+		/>
 	</head>
 
 	<body>
 		<script src="bingo.js"></script>
 		<div id="panel">
 			<i id="arrow" class="bi bi-caret-left-fill"></i>
-            <h2>MENU</h2>
-            <form action="">
-                <!--customization settings-->
-            </form>
+			<h2>MENU</h2>
+			
+            <!--settings-->
+
 		</div>
 
 		<i id="menu" class="bi bi-list"></i>
 
 		<div class="page">
 			<div id="container">
-
 				<div class="head">
 					<div class="header">B</div>
 					<div class="header">I</div>
@@ -31,39 +34,46 @@
 					<div class="header">O</div>
 				</div>
 				<div id="bingo"></div>
-
 			</div>
 		</div>
 
-        <!--bingo ball-->
+		<!--bingo ball-->
 
-        <div class="bingocaller">
+		<div class="bingocaller" id="bingocaller">
+			<div class="currentball">
+				<div class="outerball">
+					<div class="innerball">
+						<div class="text">
+							<p class="letter" id="letter"></p>
+							<p class="number" id="number"></p>
+						</div>
+					</div>
+				</div>
+			</div>
 
-            <div class="currentball">
+			<div class="ballinfo">
+				<div id="countdown">Next ball in: 10</div>
 
-                <div class="outerball">
-                    <div class="innerball">
-                        <div class="text">
-                            <p class="letter" id="letter"></p>
-                            <p class="number" id="number"></p>
-                        </div>
-                    </div>
-                </div>
+				<div class="previous">
+					<input
+						type="checkbox"
+						name="showprevious"
+						id="showprevious"
+						onclick="showPrevious()"
+					/>
+					<label for="showprevious">&nbsp;Show previous numbers</label>
+				</div>
 
-            </div>
+				<div class="pulledballs" id="pulledballs"></div>
+			</div>
+		</div>
 
-            <div class="ballinfo">
-                <div id="countdown">Next ball in: 10</div>
-
-                <div class="previous">
-                    <input type="checkbox" name="showprevious" id="showprevious" onclick="showPrevious()">
-                    <label for="showprevious">&nbsp;Show previous numbers</label>
-                </div>
-                
-                <div class="pulledballs" id="pulledballs"></div>
-            </div>
-
+        <div class="footer">
+            <button onclick="play()" id="play">Start Game</button>
+            <button onclick="stop()" id="stop">End Game</button>
+            <p>Space: Refresh bingo card</p>
+            <p>Enter: Call BINGO!</p>
+            <p>Gamemode: 75-ball bingo</p>
         </div>
-
 	</body>
 </html>
