@@ -13,7 +13,7 @@
 		<div id="panel">
 			<i id="arrow" class="bi bi-caret-left-fill"></i>
             <h2>MENU</h2>
-            <form>
+            <form action="">
                 <!--customization settings-->
             </form>
 		</div>
@@ -22,6 +22,7 @@
 
 		<div class="page">
 			<div id="container">
+
 				<div class="head">
 					<div class="header">B</div>
 					<div class="header">I</div>
@@ -30,7 +31,39 @@
 					<div class="header">O</div>
 				</div>
 				<div id="bingo"></div>
+
 			</div>
 		</div>
+
+        <!--bingo ball-->
+
+        <div class="bingocaller">
+
+            <div class="currentball">
+
+                <div class="outerball">
+                    <div class="innerball">
+                        <div class="text">
+                            <p class="letter" id="letter"></p>
+                            <p class="number" id="number"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="ballinfo">
+                <div id="countdown">Next ball in: 10</div>
+
+                <div class="previous">
+                    <input type="checkbox" name="showprevious" id="showprevious" onclick="showPrevious()">
+                    <label for="showprevious">&nbsp;Show previous numbers</label>
+                </div>
+                
+                <div class="pulledballs" id="pulledballs"></div>
+            </div>
+
+        </div>
+
 	</body>
 </html>
