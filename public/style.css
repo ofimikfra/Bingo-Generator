@@ -29,6 +29,43 @@ body {
 	transform: translateX(20%);
 }
 
+input{
+	font-family: "Nunito", sans-serif;
+	border-radius: 8px;
+	border: none;
+	padding: 2px 5px;
+	font-size: 15px;
+	margin-bottom: 5px;
+}
+
+h3 {
+	line-height: 0;
+}
+
+button {
+    background-color: #a2b8c543;
+    border-radius: 10px;
+    border: 2px solid #a2b8c5;
+    font-family: "Nunito", sans-serif;
+    font-size: 15px;
+    color: whitesmoke;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+	padding: 0px 10px;
+}
+
+button:hover {
+    background-color: #a2b8c58c;
+    transition: background-color 0.3s ease;
+}
+
+button:disabled {
+    background-color: #a2b8c533;
+    color: #f5f5f550;
+    border: 2px solid #a2b8c548;
+    cursor: not-allowed;
+}
+
 /* --------------------------- menu panel -------------------------- */
 
 #panel {
@@ -108,6 +145,106 @@ body {
 	opacity: 1;
 }
 
+/* ---------------------------------- login --------------------------------- */
+
+#login {
+	justify-content: space-evenly;
+	align-items: center;
+	margin: 20px;
+	margin-top: 80px;
+
+}
+
+#acc {
+	font-size: 15px;
+	text-decoration: underline;
+	color: #a2b8c5;
+	cursor: pointer;
+	transition: color 0.3s ease;
+	margin-left: 130px;
+}
+
+#acc:hover {
+	color: whitesmoke;
+	transition: color 0.3s ease;
+}
+
+/* --------------------------------- sign up --------------------------------- */
+
+#signupWindow {
+	opacity: 0;
+	font-size: 25px;
+	transform: translateY(160%);
+	background-color: #1e2f39;
+	transition: opacity 0.3s ease;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	position: fixed;
+	padding: 30px 50px;
+	border-radius: 15px;
+	border: 4px solid #262628;
+	z-index: 1001;
+	transition: opacity 0.5s ease, transform 0.5s ease;
+	box-shadow: 0px 0px 10px #00000044;
+}
+
+#signupWindow.popup {
+	opacity: 1;
+	transform: translateY(0%);
+	transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#signupWindow p {
+	line-height: 0;
+	font-size: 15px;
+}
+
+#signupWindow input {
+	font-size: 20px;
+}
+
+#blur {
+	opacity: 0;
+	transform: translateY(-100%);
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+	backdrop-filter: blur(5px);
+	background-color: #0000006e;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	transition: transform 0.3s ease 0.3s, opacity 0.3s ease;
+}
+
+#blur.popup {
+	opacity: 1;
+	transform: translateY(0%);
+	transition: opacity 0.3s ease;
+}
+
+.bi-x {
+	font-size: 40px;
+	color: #a2b8c5;
+	transition: color 0.3s ease;
+	position: absolute;
+	top: 0;
+	right: 5px;
+	cursor: pointer;
+}
+
+.bi-x:hover {
+	color: red;
+	transition: color 0.3s ease;
+}
+
+#signupWindow span {
+	color: rgb(255, 99, 85);
+	font-size: 12px;
+	margin-left: 10px;
+}
+
 /* ----------------------------- main bingo area ---------------------------- */
 
 .head {
@@ -152,7 +289,7 @@ body {
 }
 
 .card:hover {
-	background-color: #d3b568;
+	background-color: lightyellow;
 	transition: background-color 0.3s ease;
 }
 
@@ -162,6 +299,27 @@ body {
 
 .card.wrong {
     background-color: lightcoral;
+}
+
+.card.win {
+    background-color: darkgreen;
+}
+
+#notif {
+    background-color: darkred;
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px #00000095;
+    position: fixed;
+    top: -5px;
+    transform: translateY(-150%);
+    transition: transform 0.3s ease;
+	z-index: 1001;
+}
+
+#notif.notif {
+    transform: translateY(0%);
+    transition: transform 0.3s ease;
 }
 
 /* ------------------------------- play bingo ------------------------------- */
@@ -198,7 +356,7 @@ body {
 	display: flex;
 }
 
-.pulledballs {
+.calledballs {
 	width: fit-content;
 	display: grid;
 	flex-direction: column;
@@ -215,7 +373,7 @@ body {
 	transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.pulledballs.toggled {
+.calledballs.toggled {
 	transform: translateX(0%);
 	opacity: 100;
 	transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -273,7 +431,7 @@ body {
 	font-size: 35px;
 }
 
-.pulledballs .outerball {
+.calledballs .outerball {
 	width: 90px;
 	height: 90px;
 	border-radius: 100%;
@@ -290,7 +448,7 @@ body {
 	justify-content: center;
 }
 
-.pulledballs .innerball {
+.calledballs .innerball {
 	border-radius: 100%;
 	border: 8px double #549bc7;
 	background-color: whitesmoke;
@@ -304,7 +462,7 @@ body {
 	font-size: 25px;
 }
 
-.pulledballs .text {
+.calledballs .text {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -312,12 +470,12 @@ body {
 	transform: translateY(-2px);
 }
 
-.pulledballs .text p {
+.calledballs .text p {
 	line-height: 0;
 	margin: 9px;
 }
 
-.pulledballs .letter {
+.calledballs .letter {
 	font-size: 15px;
 }
 
@@ -334,25 +492,7 @@ body {
     margin-bottom: 5px;
 }
 
-button {
-    background-color: #a2b8c543;
-    border-radius: 10px;
-    border: 2px solid #a2b8c5;
-    font-family: "Nunito", sans-serif;
-    font-size: 15px;
-    color: whitesmoke;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
+#wins {
+    font-weight: bold;
 }
 
-button:hover {
-    background-color: #a2b8c58c;
-    transition: background-color 0.3s ease;
-}
-
-button:disabled {
-    background-color: #a2b8c533;
-    color: #f5f5f550;
-    border: 2px solid #a2b8c548;
-    cursor: not-allowed;
-}

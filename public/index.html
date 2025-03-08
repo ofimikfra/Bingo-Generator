@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<title>Bingo Generator</title>
+	<link rel="icon" type="image/x-icon" href="https://nyctrivialeague.com/wp-content/uploads/2017/11/Bingo-Icon.png" />
+</head>
+
+<body>
+	<script src="script.js"></script>
+	<div id="panel">
+		<i id="arrow" class="bi bi-caret-left-fill"></i>
+		<h2>MENU</h2>
+
+		<!--settings-->
+		<form id="login" action="/login" method="post">
+			<h3>Login</h3>
+			<input type="text" id="username" name="username" placeholder="Username" size="38px" required>
+			<br>
+			<input type="password" id="password" name="password" placeholder="Password" size="38px" required>
+			<br>
+			<button type="submit">Login</button>
+			<span id="acc"onclick="popup()">
+				Create an account
+			</span>
+		</form>
+	</div>
+
+	<i id="menu" class="bi bi-list"></i>
+
+	<div id="blur"></div>
+
+	<div class="page" id="page">
+		<div id="signupWindow">
+			<form action="/signup" method="post">
+				<i class="bi bi-x" onclick="popup()"></i>
+				<h3>Create an account</h3>
+				<p>Save your data & play with others!</p>
+				<input type="text" name="username" id="usernameNew" placeholder="Username" size="35px"> <br>
+				<input type="password" name="password" id="passwordNew" placeholder="Password" size="35px"> <br>
+				<button type="submit">Sign up</button>
+				<span>ⓘ An account with this username already exists.</span>
+			</form>
+		</div>
+
+		<div id="container">
+			<div class="head">
+				<div class="header">B</div>
+				<div class="header">I</div>
+				<div class="header">N</div>
+				<div class="header">G</div>
+				<div class="header">O</div>
+			</div>
+			<div id="bingo"></div>
+		</div>
+		<p id="notif">warning</p>
+	</div>
+
+	<!--bingo ball-->
+
+	<div class="bingocaller" id="bingocaller">
+		<div class="currentball">
+			<div class="outerball">
+				<div class="innerball">
+					<div class="text">
+						<p class="letter" id="letter"></p>
+						<p class="number" id="number"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ballinfo">
+			<div id="countdown"></div>
+
+			<div class="previous">
+				<input type="checkbox" name="showprevious" id="showprevious" onclick="showPrevious()" />
+				<label for="showprevious">&nbsp;Show previous numbers</label>
+			</div>
+
+			<div class="calledballs" id="calledballs"></div>
+		</div>
+	</div>
+
+	<div class="footer" id="footer">
+		<button onclick="play()" id="play">Start Game</button>
+		<p id="wins">Wins: 0</p>
+		<p>Space: Generate new bingo card</p>
+		<p>Minus: Clear bingo card</p>
+		<p>Enter: Call BINGO!</p>
+		<p>Gamemode: 75-ball bingo</p>
+	</div>
+</body>
+
+</html>
