@@ -1,10 +1,9 @@
 let gridSize = 5; // default grid size
 let pulledNumbers = []; // store pulled numbers
 let selectedMode = generate75Ball; // default bingo mode
-let gameover = false;
+let selectedPull = pullNumber75;
 let playing = false;
 let keybindPull = false;
-let keybindReset = false;
 
 function generateUnique(low, interval, size) {
 	let arr = [];
@@ -42,7 +41,7 @@ function generate75Ball() {
 		for (let j = 0; j < bingoData.length; j++) {
 			if (j === 2 && i === 2) {
 				bingoDiv.innerHTML +=
-					"<div class='card' style='font-size:40px'>" +
+					"<div class='card star' style='font-size:40px'>" +
 					"<i class='bi bi-star-fill'></i>" +
 					"</div>"; // add free space to bingo div
 				continue;
@@ -95,12 +94,8 @@ function pullNumber75() {
 		"<div class='outerball'> \
 			<div class='innerball'> \
 				<div class='text'> \
-					<p class='letter'>" +
-		letter +
-		"</p> \
-					<p class='number'>" +
-		num +
-		"</p> \
+					<p class='letter'>" + letter + "</p> \
+					<p class='number'>" + num + "</p> \
 				</div> \
 			</div> \
 		</div>";
@@ -115,13 +110,114 @@ function showPrevious() {
 }
 
 function play() {
-    document.getElementById("bingocaller").classList.add("play");
-    playing = true;
+	document.getElementById("bingocaller").classList.toggle("play");
+	const button = document.getElementById("play");
+	pulledballs = document.getElementById("pulledballs").innerHTML = "";
+	currentletter = document.getElementById("letter").textContent = "";
+	currentnum = document.getElementById("number").textContent = "";
+
+	if (!playing) {
+		playing = true;
+        button.disabled = true;
+        pulledNumbers = [];
+        
+        document.querySelectorAll(".card").forEach((card) => {
+            card.classList.remove("toggled");
+        });
+
+		let countdown = 5;
+		button.textContent = "Starting in " + countdown + "...";
+		document.getElementById("countdown").textContent = "Starting in " + countdown + "...";
+
+		const countdownInterval = setInterval(() => {
+			countdown--;
+			if (countdown > 0) {
+				button.textContent = "Starting in " + countdown + "...";
+				document.getElementById("countdown").textContent = "Starting in " + countdown + "...";
+			} else {
+				clearInterval(countdownInterval);
+                button.disabled = false;
+				button.textContent = "End Game";
+				call();
+			}
+		}, 1000);
+	} else {
+		playing = false;
+		button.textContent = "Start Game";
+	}
 }
 
-function stop() {
-    document.getElementById("bingocaller").classList.remove("play");
-    playing = false;
+function call(secs = 15) {
+	let countdown = secs;
+	selectedPull(); // first pull
+	document.getElementById("countdown").textContent = "Next ball in: " + countdown;
+
+	const countdownInterval = setInterval(() => {
+		if (pulledNumbers.length >= 75 || !playing) {
+			clearInterval(countdownInterval);
+            document.getElementById("footer") += "<p style='color:lightred;'>There are no more numbers.</p>"
+			return;
+		}
+
+		countdown--;
+		if (countdown >= 1) {
+			document.getElementById("countdown").textContent = "Next ball in: " + countdown;
+		} else {
+			countdown = secs;
+			selectedPull();
+			document.getElementById("countdown").textContent = "Next ball in: " + countdown;
+		}
+	}, 1000);
+}
+
+function checkBingo() {
+	const cards = document.querySelectorAll(".card");
+	const grid = Array.from(cards).map(card => card.classList.contains("toggled"));
+
+	// Check rows
+	for (let i = 0; i < gridSize; i++) {
+		if (grid.slice(i * gridSize, (i + 1) * gridSize).every(cell => cell)) {
+			return true;
+		}
+	}
+
+	// Check columns
+	for (let i = 0; i < gridSize; i++) {
+		let column = [];
+		for (let j = 0; j < gridSize; j++) {
+			column.push(grid[i + j * gridSize]);
+		}
+		if (column.every(cell => cell)) {
+			return true;
+		}
+	}
+
+	// Check diagonals
+	let diagonal1 = [];
+	let diagonal2 = [];
+	for (let i = 0; i < gridSize; i++) {
+		diagonal1.push(grid[i * (gridSize + 1)]);
+		diagonal2.push(grid[(i + 1) * (gridSize - 1)]);
+	}
+	if (diagonal1.every(cell => cell) || diagonal2.every(cell => cell)) {
+		return true;
+	}
+
+	return false;
+}
+
+function checkCard(card) {
+    if (pulledNumbers.includes(parseInt(card.textContent.trim()))) {
+        card.classList.toggle("toggled");
+    } else if (card.classList.contains('star')) {
+        card.classList.toggle("toggled");
+    }
+    else {
+        card.classList.toggle("wrong");
+        setTimeout(() => {
+            card.classList.toggle("wrong");
+        }, 500);
+    }
 }
 
 /* ---------------------------------- to do ---------------------------------- */
@@ -139,42 +235,62 @@ function stop() {
 // add different bingo game types (75-ball, 80-ball, 90-ball, 30-ball) + custom mode
 // add ball color randomizer when generated
 // add multiple bingo cards feature
+// add sound effects
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    const panel = document.getElementById("panel");
+	const panel = document.getElementById("panel");
 	const container = document.getElementById("container");
 	selectedMode();
 
 	document.querySelectorAll(".card").forEach((card) => {
-		// why inside this event listener?
 		card.addEventListener("click", () => {
-			card.classList.toggle("toggled");
+            
+            if (!playing) {
+                card.classList.toggle("toggled");
+            } else {
+                checkCard(card);
+            }
 		});
 	});
 
 	document.getElementById("arrow").addEventListener("click", () => {
 		panel.classList.toggle("collapsed");
 
-        if (playing) {
-            container.classList.toggle("fullscreenplay");
-        } else {
-            container.classList.toggle("fullscreen");
-        }
+		if (playing) {
+			container.classList.toggle("fullscreenplay");
+		} else {
+			container.classList.toggle("fullscreen");
+		}
 	});
 
 	document.getElementById("menu").addEventListener("click", () => {
-        panel.classList.toggle("collapsed");
+		panel.classList.toggle("collapsed");
 
-        if (playing) {
-            container.classList.toggle("fullscreenplay");
-        } else {
-            container.classList.toggle("fullscreen");
-        }
+		if (playing) {
+			container.classList.toggle("fullscreenplay");
+		} else {
+			container.classList.toggle("fullscreen");
+		}
 	});
 
 	document.addEventListener("keydown", (event) => {
-		if (event.code === "P" && pulledNumbers.length < 75 && playing && keybindPull) {
+		if (
+			event.code === "KeyP" &&
+			pulledNumbers.length < 75 &&
+			playing &&
+			keybindPull
+		) {
 			pullNumber75();
+		}
+
+		else if (event.code === "Space" && !playing) {
+			selectedMode();
+		}
+
+		else if (event.code === "Minus") {
+			document.querySelectorAll(".card").forEach((card) => {
+				card.classList.remove("toggled");
+			});
 		}
 	});
 });
