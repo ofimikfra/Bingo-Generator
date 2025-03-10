@@ -1,6 +1,5 @@
 const { MongoClient } = require('mongodb');
-
-const url = "mongodb+srv://sofiamikaelafrancisco:<db_password>@bingo.7hwen.mongodb.net/?retryWrites=true&w=majority&appName=Bingo";
+const url = 'mongodb+srv://sofiamikaelafrancisco:CsvMA2O6dJvswNPv@bingo.7hwen.mongodb.net/?retryWrites=true&w=majority&appName=Bingo';
 const client = new MongoClient(url);
 
 let db;
@@ -8,7 +7,7 @@ let db;
 async function connectDB() {
     try {
         await client.connect();
-        db = client.db('bingo'); // Replace with your database name
+        db = client.db('bingo'); 
         console.log('Connected to MongoDB');
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
