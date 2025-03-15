@@ -37,6 +37,35 @@ connectDB().then(() => {
                 await db.collection('users').insertOne({ 'username': username, 'password': password });
                 res.status(201).json({ message: 'Account created!' });
                 console.log('Account created!');
+
+                // signup users db stuff
+
+            }
+        } catch (err) {
+            res.status(500).send('Internal server error.')
+            console.error(err);
+        }
+    });
+
+    // login stuff 
+    app.post('/login', async (req, res) => {
+        const db = getDB();
+        const { username, password } = req.body;
+        console.log(`Username: ${username}, Password: ${password}`);
+
+        try {
+            let user = await db.collection('users').findOne({ 'username': username });
+            let pass = await db.collection('users').findOne({ 'password': password});
+        
+            if (user && pass) {
+                res.status(200).json({ message: `Welcome back, @${username}!`});
+
+                // retrieve data db
+
+            } else if (user && !pass) {
+                res.status(400).json({ message: 'ⓘ Your password is incorrect, please try again.' });
+            } else {
+                res.status(400).json({ message: 'ⓘ There is no account associated with this username, try creating one instead.' });
             }
         } catch (err) {
             res.status(500).send('Internal server error.')

@@ -126,7 +126,6 @@ function showPrevious() {
 
 function play() {
 	const button = document.getElementById('play');
-    const notif = document.getElementById('notif');
     const cards = document.querySelectorAll('.card');
 	document.getElementById('bingocaller').classList.toggle('play'); // show bingo caller
 
@@ -145,8 +144,6 @@ function play() {
 		playing = true;
         button.disabled = true;
         calledNumbers = [];
-
-        notif.style.backgroundColor = 'darkred';
 
 		let countdown = 5;
 		button.textContent = 'Starting in ' + countdown + '...';
@@ -167,14 +164,12 @@ function play() {
 	} else {
 		playing = false;
 		button.textContent = 'Start Game';
-        notif.classList.remove('notif');
         cards.forEach(card => card.classList.remove('win'));
 		cards.forEach(card => card.classList.remove('toggled'));
 	}
 }
 
 function call(secs) {
-    const notif = document.getElementById('notif');
 	let countdown = secs;
 	selectedCall(); // first call
 	document.getElementById('countdown').textContent = 'Next ball in: ' + countdown;
@@ -187,12 +182,7 @@ function call(secs) {
 
         else if (calledNumbers.length >= 75) {
             clearInterval(countdownInterval);
-            notif.classList.toggle('notif');
-			notif.style.backgroundColor = 'darkred';
-            notif.textContent = 'There are no more numbers.';
-            setTimeout(() => {
-                notif.classList.toggle('notif');
-            }, 1500)
+			notify('There are no more numbers.','darkred');
             return;
         }
 
@@ -211,11 +201,7 @@ function call(secs) {
 function bingo(patterns) {
     const cards = document.querySelectorAll('.card');
     const grid = Array.from(cards).map(card => card.classList.contains('toggled'));
-    const notif = document.getElementById('notif');
     const mywins = document.getElementById('wins');
-
-    notif.style.backgroundColor = 'darkgreen';
-    notif.textContent = 'BINGO!';
 
     if (patterns.includes('line')) {
         // rows
@@ -229,10 +215,7 @@ function bingo(patterns) {
 					wins++;
 					mywins.textContent = 'Wins: ' + wins;
 				}
-                notif.classList.toggle('notif');
-				setTimeout(() => {
-					notif.classList.toggle('notif');
-				}, 1500);
+                notify('BINGO!','#299d29');
                 return true;
             }
         }
@@ -252,10 +235,7 @@ function bingo(patterns) {
 					wins++;
 					mywins.textContent = 'Wins: ' + wins;
 				}
-                notif.classList.toggle('notif');
-				setTimeout(() => {
-					notif.classList.toggle('notif');
-				}, 1500);
+                notify('BINGO!','#299d29');
                 return true;
             }
         }
@@ -278,10 +258,7 @@ function bingo(patterns) {
 				wins++;
 				mywins.textContent = 'Wins: ' + wins;
 			}
-			notif.classList.toggle('notif');
-				setTimeout(() => {
-					notif.classList.toggle('notif');
-				}, 1500);
+			notify('BINGO!','#299d29');
             return true;
         }
         if (diagonal2.every(cell => cell)) {
@@ -293,10 +270,7 @@ function bingo(patterns) {
 				wins++;
 				mywins.textContent = 'Wins: ' + wins;
 			}
-            notif.classList.toggle('notif');
-			setTimeout(() => {
-				notif.classList.toggle('notif');
-			}, 1500);
+			notify('BINGO!','#299d29');
             return true;
         }
     }
@@ -310,24 +284,15 @@ function bingo(patterns) {
 				wins++;
 				mywins.textContent = 'Wins: ' + wins;
 			}
-            notif.classList.toggle('notif');
-			setTimeout(() => {
-				notif.classList.toggle('notif');
-			}, 1500);
+			notify('BINGO!','#299d29');
             return true;
         }
     }
 
-	notif.style.backgroundColor = 'darkred';
-    notif.textContent = 'No bingo...';
-    notif.classList.toggle('notif');
-    setTimeout(() => {
-        notif.classList.toggle('notif');
-    }, 1500);
+	notify('No bingo...','darkred');
 }
 
 function checkCard(card) {
-    const notif = document.getElementById('notif');
     if (calledNumbers.includes(parseInt(card.textContent.trim()))) {
         card.classList.toggle('toggled');
     } else if (card.classList.contains('star')) {
@@ -335,17 +300,10 @@ function checkCard(card) {
     }
     else {
         card.classList.toggle('wrong');
-		notif.style.backgroundColor = 'darkred';
-        notif.textContent = 'The number you selected was not called.'
-        
-        notif.classList.toggle('notif');
-        setTimeout(() => {
+		notify('The number you selected was not called.','darkred');
+		setTimeout(() => {
             card.classList.toggle('wrong');
-        }, 200);
-
-        setTimeout(() => {
-            notif.classList.toggle('notif');
-        }, 1500)
+        }, 250);
     }
 }
 
@@ -353,7 +311,7 @@ function popup() {
 	document.getElementById('signupWindow').classList.toggle('popup'); 
 	document.getElementById('blur').classList.toggle('popup'); 
 	document.getElementById('panel').classList.toggle('collapsed');
-	document.getElementById('info').textContent = '';
+	document.getElementById('infosignup').textContent = '';
 	document.getElementById('usernameNew').value = '';
 	document.getElementById('passwordNew').value = '';
 
@@ -364,28 +322,41 @@ function popup() {
 	}
 }
 
+function notify(text,color) {
+	const notif = document.getElementById('notif');
+	notif.style.backgroundColor = color;
+	notif.textContent = text;
+
+	notif.classList.add('notif');
+	setTimeout(() => {
+		notif.classList.remove('notif');
+	}, 1500)
+}
+
 function login(user) {
 	const loginForm = document.getElementById('login');
 
 	if (loggedin) {
 		loginForm.innerHTML = `
-			<h3 style='margin-bottom:10px;'>@${user}</h3>
-			<span id='acc' onclick='loggedin=false; login();' style='margin-left:0;'>Logout</span>
-			<span id='acc' onclick='popup()' style='margin-left:10px;'>Create an account</span>
+			<h3 style='line-height:0; margin-top:10px; margin-bottom:10px;'>@${user}</h3>
+			<span id='acc' onclick='loggedin=false; login();' style='margin-right:15px; margin-left:0; margin-bottom:0;'>Logout</span>
+			<span id='acc' onclick='deleteAcc()' style='margin-left:15px; margin-left:0; margin-bottom:0;'>Delete account</span>
 		`;
 	} else {
+		notify('Successfully logged out.','#299d29');
 		loginForm.innerHTML = `
-			<h3>Login</h3> 
-			<input type='text' id='username' name='username' placeholder='Username' size='38px' required> <br> 
-			<input type='password' id='password' name='password' placeholder='Password' size='38px' required> <br> 
-			<button type='submit'>Login</button> 
-			<span id='acc' onclick='popup()'> 
-				Create an account 
+			<h3>Login</h3>
+			<p id="infologin"></p>
+			<input type='text' id='usernameLogin' name='username' placeholder='Username' size='38px' required> <br>
+			<input type='password' id='passwordLogin' name='password' placeholder='Password' size='38px' required> <br>
+			<button type='submit'>Login</button>
+			<span id='acc'onclick='popup()'>
+				Create an account
 			</span>
 		`;
 	}
 
-	// make server.js and script.js stuff for logging in, dont forget to make loggedin=false first and put the login() function in the event listener
+	// make server.js and script.js stuff for logging in, put the login() function in the event listener
 }
 
 /* ---------------------------------- to do ---------------------------------- */
@@ -459,8 +430,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	
 		let username = document.getElementById('usernameNew').value;
 		let password = document.getElementById('passwordNew').value;
-		const info = document.getElementById('info');
-		const notif = document.getElementById('notif');
+		const info = document.getElementById('infosignup');
+
+		let usernameField = document.getElementById('usernameNew');
+		let passwordField = document.getElementById('passwordNew');
+
+		usernameField.style.border = 'none';
+		passwordField.style.border = 'none';
+
+		if (!username || !password) {
+			if (!username) {
+				usernameField.style.border = '2px solid red';
+			}
+			if (!password) {
+				passwordField.style.border = '2px solid red';
+			}
+			return;
+		}
 	
 		try {
 			const response = await fetch('/signup', {
@@ -472,18 +458,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			const result = await response.json();
 			
 			if (response.ok) {
-				notif.textContent = result.message;
-				notif.style.backgroundColor = 'darkgreen';
-				notif.classList.toggle('notif');
 				document.getElementById('signupWindow').classList.toggle('popup');
 				document.getElementById('blur').classList.toggle('popup');
-				setTimeout(() => {
-					notif.classList.toggle('notif');
-				}, 1500)
-
+				notify(result.message,'#299d29');
+				loggedin = true;
+				login(username);
 			} else {
 				info.textContent = result.message;
 				info.style.color = 'red';
+				usernameField.style.border = '2px solid red';
 			}
 		} catch (err) {
 			info.textContent = 'An error occurred. Please try again.';
@@ -491,16 +474,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 	});
 
-	document.getElementById('signup').addEventListener('submit', async (event) => {
+	// login stuff
+	document.getElementById('login').addEventListener('submit', async (event) => {
 		event.preventDefault();
 	
-		let username = document.getElementById('usernameNew').value;
-		let password = document.getElementById('passwordNew').value;
-		const info = document.getElementById('info');
-		const notif = document.getElementById('notif');
+		let username = document.getElementById('usernameLogin').value;
+		let password = document.getElementById('passwordLogin').value;
+		const info = document.getElementById('infologin');
+
+		let usernameField = document.getElementById('usernameLogin');
+		let passwordField = document.getElementById('passwordLogin');
+
+		usernameField.style.border = 'none';
+		passwordField.style.border = 'none';
+
+		if (!username || !password) {
+			if (!username) {
+				usernameField.style.border = '2px solid red';
+			}
+			if (!password) {
+				passwordField.style.border = '2px solid red';
+			}
+			return;
+		}
 	
 		try {
-			const response = await fetch('/signup', {
+			const response = await fetch('/login', {
 				method: 'POST',
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify({ username, password })
@@ -509,18 +508,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			const result = await response.json();
 			
 			if (response.ok) {
-				notif.textContent = result.message;
-				notif.style.backgroundColor = 'darkgreen';
-				notif.classList.toggle('notif');
-				document.getElementById('signupWindow').classList.toggle('popup');
-				document.getElementById('blur').classList.toggle('popup');
-				setTimeout(() => {
-					notif.classList.toggle('notif');
-				}, 1500)
+				loggedin = true;
+				login(username);
+
+				notify(result.message,'#299d29');
+
+				// retrieve data
 
 			} else {
+				info.style.color = '#ff6355';
 				info.textContent = result.message;
-				info.style.color = 'red';
+				usernameField.style.border = '2px solid #ff6355';
+				passwordField.style.border = '2px solid #ff6355';
 			}
 		} catch (err) {
 			info.textContent = 'An error occurred. Please try again.';

@@ -66,6 +66,14 @@ button:disabled {
     cursor: not-allowed;
 }
 
+hr {
+	background-color: #ffffff20;
+	height: 2px;
+	border: none;
+	width: 90%;
+	border-radius: 5px;
+}
+
 /* --------------------------- menu panel -------------------------- */
 
 #panel {
@@ -168,6 +176,13 @@ button:disabled {
 	transition: color 0.3s ease;
 }
 
+#infologin {
+	color: #ff6355;
+	font-size: 12px;
+	line-height: 15px;
+	margin-bottom: 5px;
+}
+
 /* --------------------------------- sign up --------------------------------- */
 
 #signupWindow {
@@ -238,7 +253,7 @@ button:disabled {
 	transition: color 0.3s ease;
 }
 
-#signupWindow span {
+#infosignup {
 	color: rgb(255, 99, 85);
 	font-size: 12px;
 	margin-left: 10px;

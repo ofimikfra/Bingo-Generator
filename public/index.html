@@ -18,14 +18,16 @@
 		<!--settings-->
 		<form id='login'>
 			<h3>Login</h3>
-			<input type='text' id='username' name='username' placeholder='Username' size='38px' required> <br>
-			<input type='password' id='password' name='password' placeholder='Password' size='38px' required> <br>
+			<p id="infologin"></p>
+			<input type='text' id='usernameLogin' name='username' placeholder='Username' size='38px' required> <br>
+			<input type='password' id='passwordLogin' name='password' placeholder='Password' size='38px' required> <br>
 			<button type='submit'>Login</button>
 			<span id='acc'onclick='popup()'>
 				Create an account
 			</span>
 		</form>
 
+		<hr>
 
 	</div>
 
@@ -42,7 +44,7 @@
 				<input type='text' name='username' id='usernameNew' placeholder='Username' size='35px'> <br>
 				<input type='password' name='password' id='passwordNew' placeholder='Password' size='35px'> <br> <!--make node.js form stuff db-->
 				<button type='submit'>Sign up</button>
-				<span id='info'></span>
+				<span id='infosignup'></span>
 			</form>
 		</div>
 
@@ -89,7 +91,7 @@
 		<button onclick='play()' id='play'>Start Game</button>
 		<p id='wins'>Wins: 0</p>
 		<p>Space: Generate new bingo card</p>
-		<p>Minus: Clear bingo card</p>
+		<p>Minus (-): Clear bingo card</p>
 		<p>Enter: Call BINGO!</p>
 		<p>Gamemode: 75-ball bingo</p>
 	</div>
