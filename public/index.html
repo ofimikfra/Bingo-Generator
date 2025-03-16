@@ -15,7 +15,6 @@
 		<i id='arrow' class='bi bi-caret-left-fill'></i>
 		<h2>MENU</h2>
 
-		<!--settings-->
 		<form id='login'>
 			<h3>Login</h3>
 			<p id="infologin"></p>
@@ -26,8 +25,13 @@
 				Create an account
 			</span>
 		</form>
-
+		
 		<hr>
+
+		<div id="multiplayer"></div>
+		
+		<!--settings-->
+		<div id="settings"></div>
 
 	</div>
 
@@ -42,7 +46,7 @@
 				<h3>Create an account</h3>
 				<p>Save your data & play with others!</p>
 				<input type='text' name='username' id='usernameNew' placeholder='Username' size='35px'> <br>
-				<input type='password' name='password' id='passwordNew' placeholder='Password' size='35px'> <br> <!--make node.js form stuff db-->
+				<input type='password' name='password' id='passwordNew' placeholder='Password' size='35px'> <br> 
 				<button type='submit'>Sign up</button>
 				<span id='infosignup'></span>
 			</form>
@@ -92,7 +96,7 @@
 		<p id='wins'>Wins: 0</p>
 		<p>Space: Generate new bingo card</p>
 		<p>Minus (-): Clear bingo card</p>
-		<p>Enter: Call BINGO!</p>
+		<p>Plus (+): Call BINGO!</p>
 		<p>Gamemode: 75-ball bingo</p>
 	</div>
 </body>

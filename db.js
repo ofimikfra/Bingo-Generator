@@ -21,9 +21,4 @@ function getDB() {
     return db;
 }
 
-function signUp(db, user, pass, creationDateTime, recentLoginDateTime) {
-    // insert into users
-    // insert into data
-}
-
 module.exports = { connectDB, getDB };

@@ -8,6 +8,7 @@ let secs = 15; // default interval for calling numbers
 let patterns = ['line','diagonal'] // default patterns
 let wins = 0; // default wins
 let loggedin = false;
+let myuser = '';
 
 function generateUnique(low, interval, size) {
 	let arr = [];
@@ -333,8 +334,32 @@ function notify(text,color) {
 	}, 1500)
 }
 
+async function deleteAcc() {
+	if (confirm('Are you sure you want to delete your account?')) {
+		try {
+			const response = await fetch('/delete', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ username: myuser })
+			});
+			const result = await response.json();
+			if (result.success) {
+				loggedin = false;
+				myuser = '';
+				login('');
+				notify('Your account has been deleted.', '#299d29');
+			} else {
+				notify('Failed to delete account.', 'darkred');
+			}
+		} catch (err) {
+			notify('An error occurred. Please try again.', 'darkred');
+		}
+	}
+}
+
 function login(user) {
 	const loginForm = document.getElementById('login');
+	const multiplayer = document.getElementById('multiplayer');
 
 	if (loggedin) {
 		loginForm.innerHTML = `
@@ -342,6 +367,10 @@ function login(user) {
 			<span id='acc' onclick='loggedin=false; login();' style='margin-right:15px; margin-left:0; margin-bottom:0;'>Logout</span>
 			<span id='acc' onclick='deleteAcc()' style='margin-left:15px; margin-left:0; margin-bottom:0;'>Delete account</span>
 		`;
+
+		// add play with others tab/button
+		multiplayer.innerHTML = '';
+
 	} else {
 		notify('Successfully logged out.','#299d29');
 		loginForm.innerHTML = `
@@ -355,8 +384,6 @@ function login(user) {
 			</span>
 		`;
 	}
-
-	// make server.js and script.js stuff for logging in, put the login() function in the event listener
 }
 
 /* ---------------------------------- to do ---------------------------------- */
@@ -372,6 +399,9 @@ function login(user) {
 // add ball color randomizer when generated
 // add multiple bingo cards feature
 // add sound effects
+
+// add sign up restrictions (min/max chars, special char, capital)
+// retrieve & add data from mongo for sign up & login
 
 document.addEventListener('DOMContentLoaded', (event) => {
 	const panel = document.getElementById('panel');
@@ -419,7 +449,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			});
         }
 
-        else if (event.code === 'KeyB') {
+        else if (event.code === 'Plus') {
             bingo(patterns);
         }
 	});
@@ -460,12 +490,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			if (response.ok) {
 				document.getElementById('signupWindow').classList.toggle('popup');
 				document.getElementById('blur').classList.toggle('popup');
-				notify(result.message,'#299d29');
+
 				loggedin = true;
+				myuser = username;
 				login(username);
+				notify(result.message,'#299d29');
 			} else {
 				info.textContent = result.message;
-				info.style.color = 'red';
+				info.style.color = '#ff6355';
 				usernameField.style.border = '2px solid red';
 			}
 		} catch (err) {
@@ -509,12 +541,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			
 			if (response.ok) {
 				loggedin = true;
+				myuser = username;
 				login(username);
-
 				notify(result.message,'#299d29');
-
-				// retrieve data
-
 			} else {
 				info.style.color = '#ff6355';
 				info.textContent = result.message;

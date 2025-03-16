@@ -5,7 +5,7 @@ const { connectDB, getDB } = require('./db');
 const app = express();
 const port = 3000;
 
-// Middleware to parse JSON and URL-encoded request bodies
+// middleware to parse url
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -18,7 +18,8 @@ connectDB().then(() => {
         res.sendFile(path.join(__dirname, 'public', 'index.html'));
     });
 
-    // sign up stuff
+    /* ------------------------------ sign up stuff ----------------------------- */
+
     app.post('/signup', async (req, res) => {
         const db = getDB();
         const { username, password } = req.body;
@@ -34,20 +35,31 @@ connectDB().then(() => {
                     res.status(400).json({ message: 'ⓘ An account with this username already exists.' });
                 }
             } else {
-                await db.collection('users').insertOne({ 'username': username, 'password': password });
+                // insert into users db
+                await db.collection('users').insertOne({ 
+                    'username': username, 
+                    'password': password,
+                    'creationDateTime': new Date(),
+                    'recentLoginDateTime': new Date()
+                });
+
+                await db.collection('data').insertOne({
+                    'username': username,
+                    'wins': 0,
+                    'friends': []
+                });
+
                 res.status(201).json({ message: 'Account created!' });
                 console.log('Account created!');
-
-                // signup users db stuff
-
             }
         } catch (err) {
-            res.status(500).send('Internal server error.')
+            res.status(500).send('Internal server error.');
             console.error(err);
         }
     });
 
-    // login stuff 
+    /* ------------------------------- login stuff ------------------------------ */
+
     app.post('/login', async (req, res) => {
         const db = getDB();
         const { username, password } = req.body;
@@ -60,7 +72,13 @@ connectDB().then(() => {
             if (user && pass) {
                 res.status(200).json({ message: `Welcome back, @${username}!`});
 
-                // retrieve data db
+                await db.collection('users').updateOne( // update most recent login
+                    { 'username': username },
+                    { $set: { 'recentLoginDateTime': new Date() } }
+                );
+
+                console.log('Logged in successfully.')
+                // retrieve data
 
             } else if (user && !pass) {
                 res.status(400).json({ message: 'ⓘ Your password is incorrect, please try again.' });
@@ -69,6 +87,23 @@ connectDB().then(() => {
             }
         } catch (err) {
             res.status(500).send('Internal server error.')
+            console.error(err);
+        }
+    });
+
+    /* ------------------------------ delete account stuff ----------------------------- */
+
+    app.post('/delete', async (req, res) => {
+        const db = getDB();
+        const { username } = req.body;
+    
+        try {
+            await db.collection('users').deleteOne({ 'username': username });
+            await db.collection('data').deleteOne({ 'username': username });
+            res.status(200).json({ success: true });
+            console.log('Account deleted.');
+        } catch (err) {
+            res.status(500).json({ success: false });
             console.error(err);
         }
     });
